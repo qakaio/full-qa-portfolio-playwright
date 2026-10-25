@@ -1,7 +1,7 @@
 # Matriz de casos de teste
 
 Ambiente: `https://qakaio.github.io/rampz-store/`  
-Execução de referência: Chromium, 34 testes detectados pelo Playwright.
+Execução de referência: 35 casos em Chromium, Firefox e WebKit (105 execuções).
 
 ## Casos automatizados
 
@@ -13,6 +13,7 @@ Execução de referência: Chromium, 34 testes detectados pelo Playwright.
 | UI-02 | P1 | Atalho `/` foca o campo de busca | `e2e/accessibility-responsive.spec.js` | Automatizado |
 | UI-03 | P2 | Controles principais têm nomes acessíveis e há um H1 | `e2e/accessibility-responsive.spec.js` | Automatizado |
 | UI-04 | P2 | Carregamento inicial não lança exceção JavaScript | `e2e/accessibility-responsive.spec.js` | Automatizado |
+| UI-05 | P1 | Axe verifica critérios WCAG 2.1 A/AA na página inicial | `e2e/accessibility-responsive.spec.js` | Falha esperada — violações conhecidas |
 | CAT-01 | P1 | Catálogo mostra produtos, categoria e paginação do seed | `e2e/catalog.spec.js` | Automatizado |
 | CAT-01b | P1 | Produto sem estoque não oferece ação de compra | `e2e/catalog.spec.js` | Automatizado |
 | CAT-02 | P1 | Busca ignora caixa e permite limpar estado sem resultados | `e2e/catalog.spec.js` | Automatizado |
@@ -60,8 +61,19 @@ inesperada do CI.
 | Administração e transições de pedidos | Pendente | Requer API e contas/dados seed de teste. |
 | CAT-05b, limites de preços inválidos/invertidos | Pendente | Definir o comportamento esperado antes de fixar asserts. |
 | CART-06b, estoque alterado entre catálogo e checkout | Pendente | Requer alteração concorrente do estoque no backend. |
-| Auditoria completa de acessibilidade | Pendente | Os testes atuais são smoke checks; complementar com avaliação automatizada e manual. |
-| Cross-browser | Pendente | A execução atual cobre somente Chromium. |
+| Acessibilidade em estados interativos e avaliação manual | Pendente | UI-05 audita a página inicial; ampliar para diálogos/formulários e fazer avaliação com teclado/leitor de tela. |
+| Cross-browser | Automatizado | Os 35 casos executam em Chromium, Firefox e WebKit no CI. |
+
+### Baseline de acessibilidade
+
+Na execução de referência, axe-core encontrou 88 nós afetados por duas regras
+de impacto sério: contraste insuficiente (`color-contrast`, 73 nós) e
+incompatibilidade entre texto visível e nome acessível
+(`label-content-name-mismatch`, 15 nós). Como este repositório contém apenas
+os testes e o site é publicado em outro repositório, `UI-05` fica marcado como
+falha esperada para preservar os detalhes no relatório sem tornar o CI
+vermelho. Quando a aplicação corrigir esses problemas, a anotação deve ser
+removida; um resultado limpo passará a ser obrigatório.
 
 Os dois smoke tests `DEP-*` verificam a entrega estática (HTML/CSS/JavaScript)
 por HTTP; não devem ser contabilizados como cobertura dos endpoints da API de

@@ -68,10 +68,13 @@ npm run test:e2e:report
 npm run allure:open
 ```
 
-O workflow `.github/workflows/e2e.yml` executa Chromium em pull requests, pushes,
-execução manual e semanalmente às segundas-feiras. Os relatórios e evidências
-são publicados como artefato da execução por 14 dias; Java 17 é instalado pelo
-workflow para gerar o HTML Allure.
+O workflow `.github/workflows/e2e.yml` executa Chromium, Firefox e WebKit em
+pull requests, pushes, execução manual e semanalmente às segundas-feiras. Os
+relatórios e evidências são publicados como artefato da execução por 14 dias;
+Java 17 é instalado pelo workflow para gerar o HTML Allure.
+O resumo do job mostra contagens de aprovação, falhas esperadas, falhas
+inesperadas e retries por navegador; localmente, `npm run test:summary` lê o
+JSON da última execução.
 
 ## 3. Estratégia de testes
 
@@ -90,9 +93,10 @@ Organize a suíte por nível, evitando tentar provar tudo pelo navegador:
 4. **Smoke checks HTTP de deployment**: status e content-type do HTML, CSS e
    JavaScript publicados. Esses GETs verificam a hospedagem estática, não o
    contrato da API de negócio.
-5. **Testes não funcionais leves**: responsividade, teclado e ausência de
-   overflow. São smoke checks Chromium; não substituem auditoria completa de
-   acessibilidade, desempenho ou compatibilidade.
+5. **Testes não funcionais leves**: responsividade, teclado, ausência de
+   overflow e auditoria automatizada axe-core para WCAG 2.1 A/AA. São
+   verificações cross-browser; não substituem avaliação manual, leitor de tela
+   ou testes de desempenho.
 
 Uma boa suíte não precisa repetir a mesma regra em todos os níveis. Por
 exemplo, validar muitas combinações de cálculo de frete é mais rápido no teste
@@ -114,7 +118,7 @@ Para IDs, prioridade, status e limitações por caso, consulte
 | Checkout | Abertura com item; validação de endereço obrigatório, e-mail e CEP; estado quando a API pública de frete falha, sem avanço ou confirmação falsa. |
 | Conta | Validação de campos obrigatórios, CPF inválido sem persistir conta e confirmação de senha diferente no cadastro local. Login, pedidos e administração não foram automatizados porque a autenticação publicada não está acessível sem a API. |
 | Contato | Campos obrigatórios; formato de e-mail; tamanho mínimo da mensagem; confirmação local sem requisição de envio. |
-| Layout, teclado e acessibilidade | Viewports de 320, 390, 768, 1280 e 1440 px; atalho `/`; navegação por âncoras; nomes acessíveis nos controles principais e hierarquia básica de headings; exceções JavaScript no carregamento. |
+| Layout, teclado e acessibilidade | Viewports de 320, 390, 768, 1280 e 1440 px; atalho `/`; navegação por âncoras; nomes acessíveis nos controles principais e hierarquia básica de headings; exceções JavaScript; auditoria axe-core WCAG 2.1 A/AA (UI-05, baseline conhecido). |
 | Deployment | Resposta HTTP 200 e tipo de conteúdo do documento principal, do CSS e do JavaScript publicados. Não valida endpoints da API de negócio. |
 
 Os testes `CHK-01` e `CART-04` verificam e documentam o estado do checkout
@@ -209,7 +213,7 @@ um caso como automatizado sem teste e execução comprovável.
 | API-08 | P2 | Rate limit de escrita e `Retry-After` | Excesso retorna 429; validar isoladamente para não afetar a suíte paralela. |
 | API-09 | P1 | Headers de segurança e conteúdo servido | Headers esperados; arquivos internos/configuração não são servidos. |
 | UI-02 | P1 | Navegação por teclado e foco visível dos controles interativos | Busca abre/foca; foco visível; controles operáveis sem mouse. |
-| UI-03 | P2 | Auditoria completa de acessibilidade | Complementar os smoke checks com avaliação automatizada e manual. |
+| UI-05 | P2 | Ampliar auditoria de acessibilidade para fluxos interativos e avaliação manual | Auditar diálogos e formulários; complementar axe-core com teclado e leitor de tela. |
 | UI-04 | P2 | Monitorar erros de console e falhas de rede não esperadas | Distinguir erros conhecidos de APIs indisponíveis no ambiente público. |
 
 O backlog é uma proposta de portfolio, não uma afirmação de que todos esses
@@ -323,8 +327,7 @@ Para apresentar o trabalho, inclua no repositório ou na descrição do portfoli
    prioridade e status (automatizado/manual/pendente).
 4. Evidências de execução: comando, versão de Node/Playwright, navegador,
    resultado, relatório HTML e trace de falha quando aplicável.
-5. CI executando checks, testes e2e; registre o que é Chromium e não prometa
-   compatibilidade cross-browser sem executar em outros browsers.
+5. CI executando checks e a suíte E2E em Chromium, Firefox e WebKit.
 6. Exemplos de bug report reproduzível, com ambiente, passos, esperado,
    obtido, evidência e severidade.
 7. Uma seção de limitações: API simplificada, dados locais/in-memory, ausência

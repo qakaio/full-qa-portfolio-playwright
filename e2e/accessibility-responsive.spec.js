@@ -1,4 +1,5 @@
 import { expect, test } from "@playwright/test";
+import AxeBuilder from "@axe-core/playwright";
 import { openCleanStore } from "./helpers.js";
 
 test.beforeEach(async ({ page }) => {
@@ -71,4 +72,26 @@ test("UI-04 P2 - página inicial não lança exceções JavaScript", async ({
   await expect(page.getByTestId("product-card-1")).toBeVisible();
 
   expect(pageErrors).toEqual([]);
+});
+
+test("UI-05 P1 - página inicial não apresenta violações WCAG A/AA", async ({
+  page,
+}) => {
+  test.fail(
+    true,
+    "Baseline público registra violações conhecidas; remover após correção no site.",
+  );
+
+  const accessibilityScan = await new AxeBuilder({ page })
+    .withTags(["wcag2a", "wcag2aa", "wcag21a", "wcag21aa"])
+    .analyze();
+
+  const violations = accessibilityScan.violations.map((violation) => ({
+    id: violation.id,
+    impact: violation.impact,
+    affectedNodes: violation.nodes.length,
+    sampleTargets: violation.nodes.slice(0, 3).map((node) => node.target),
+  }));
+
+  expect(violations, JSON.stringify(violations, null, 2)).toEqual([]);
 });

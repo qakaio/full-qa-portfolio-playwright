@@ -11,14 +11,14 @@ validação de formulários, responsividade e evidências de execução.
 ## Stack e execução
 
 - Node.js 20+
-- Playwright Test com Chromium
+- Playwright Test com Chromium, Firefox e WebKit
 - Playwright APIRequestContext para smoke checks HTTP de deployment estático
 - GitHub Actions para execução contínua
 - Allure para resultados e relatórios
 
 ```powershell
 npm ci
-npx playwright install chromium
+npx playwright install chromium firefox webkit
 npm run test:e2e
 ```
 
@@ -36,9 +36,14 @@ Outros comandos úteis:
 ```powershell
 npm run test:e2e:ui
 npm run test:e2e:headed
+npm run test:summary
 npx playwright test e2e/cart.spec.js --project=chromium
 npx playwright test --grep "CART"
 ```
+
+`npm run test:summary` resume o último relatório JSON do Playwright por
+navegador. Execute-o após a suíte; no GitHub Actions, o mesmo resumo aparece
+automaticamente na página da execução.
 
 ## Cobertura atual
 
@@ -49,20 +54,27 @@ npx playwright test --grep "CART"
 | Checkout | Campos obrigatórios, e-mail e CEP inválidos, erro de frete sem confirmação indevida e comportamento do checkout vazio. |
 | Conta | Obrigatórios do cadastro, rejeição de CPF inválido sem persistir conta e confirmação de senha diferente. |
 | Contato | Campos obrigatórios, formato de e-mail, tamanho mínimo e confirmação local sem chamada de envio. |
-| Interface | Viewports de 320–1440 px, navegação por teclado, nomes acessíveis, âncoras e exceções JavaScript. |
+| Interface | Viewports de 320–1440 px, navegação por teclado, nomes acessíveis, âncoras, exceções JavaScript e auditoria axe-core WCAG 2.1 A/AA. |
 | Deployment | Status HTTP e tipo de conteúdo da página publicada, CSS e JavaScript. Esses checks não substituem testes da API de negócio. |
 
-**Execução de referência:** 34 testes Playwright em Chromium; `npm ci` e
+**Execução de referência:** 35 cenários Playwright em Chromium, Firefox e
+WebKit (105 execuções na matriz); `npm ci` e
 `npm run test:e2e` validados localmente. O caso CHK-01 é uma falha esperada
 intencional: o site público deixa o botão de checkout habilitado com o
-carrinho vazio.
+carrinho vazio. UI-05 também registra como falha esperada o baseline de
+acessibilidade do site publicado (contraste e nomes acessíveis); detalhes e
+quantidades estão na [matriz de casos](./TEST-CASE-MATRIX.md). A execução
+usa dois workers para reduzir timeouts intermitentes dos navegadores ao
+consultar o site público.
 
 ## CI e evidências
 
 O workflow [`.github/workflows/e2e.yml`](.github/workflows/e2e.yml) executa em
 pull requests, push, acionamento manual e semanalmente. Instala Node.js,
-Chromium e Java 17, roda a suíte e publica os relatórios Playwright/Allure e
-evidências de falha como artifact da execução por 14 dias.
+Chromium, Firefox, WebKit e Java 17, roda a suíte e publica os relatórios
+Playwright/Allure e evidências de falha como artifact da execução por 14 dias.
+O resumo do job apresenta os resultados separados por navegador, incluindo
+falhas esperadas e flaky tests.
 
 ## Limitações e próximos passos
 

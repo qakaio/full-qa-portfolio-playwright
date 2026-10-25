@@ -10,10 +10,12 @@
     "test:e2e:ui": "playwright test --ui",
     "test:e2e:headed": "playwright test --headed",
     "test:e2e:report": "playwright show-report",
+    "test:summary": "node scripts/write-test-summary.js",
     "allure:generate": "allure generate allure-results --clean --output allure-report",
     "allure:open": "allure open allure-report"
   },
   "devDependencies": {
+    "@axe-core/playwright": "^4.14.0",
     "@playwright/test": "^1.56.1",
     "allure-commandline": "^2.46.1",
     "allure-playwright": "^3.14.0"

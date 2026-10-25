@@ -48,7 +48,7 @@ test("UI-03 P2 - controles principais têm nomes acessíveis", async ({
   await expect(page.getByRole("heading", { level: 1 })).toHaveCount(1);
 });
 
-test("CAT-09 P2 - links da navegação levam às seções correspondentes", async ({
+test("NAV-01 P2 - links da navegação levam às seções correspondentes", async ({
   page,
 }) => {
   await page.getByTestId("nav-categories").click();

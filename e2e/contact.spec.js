@@ -5,7 +5,7 @@ test.beforeEach(async ({ page }) => {
   await openCleanStore(page);
 });
 
-test("CON-01 P1 - impede envio de contato com campos obrigatórios vazios", async ({
+test("CON-01a P1 - impede envio de contato com campos obrigatórios vazios", async ({
   page,
 }) => {
   await page.getByTestId("contact-submit-button").click();

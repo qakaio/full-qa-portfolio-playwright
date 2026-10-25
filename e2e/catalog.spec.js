@@ -95,7 +95,7 @@ test("CAT-06 P2 - navega para a próxima página e retorna", async ({ page }) =>
   await expect(grid.locator("article")).toHaveCount(12);
 });
 
-test("CAT-08 P2 - fecha detalhes do produto com Escape e devolve o foco", async ({
+test("CAT-08a P2 - fecha detalhes do produto com Escape e devolve o foco", async ({
   page,
 }) => {
   const detailButton = page.getByRole("button", {
@@ -116,13 +116,27 @@ test("CAT-08 P2 - fecha detalhes do produto com Escape e devolve o foco", async 
   await expect(detailButton).toBeFocused();
 });
 
-test("CAT-08 P2 - fecha detalhes pelo botão de fechar", async ({ page }) => {
+test("CAT-08b P2 - fecha detalhes pelo botão de fechar", async ({ page }) => {
   await page.getByTestId("product-detail-3").click();
   const dialog = page.getByRole("dialog", { name: "Glass Beaker 250ml" });
   await expect(dialog).toBeVisible();
 
   await dialog.getByRole("button", { name: "Close product details" }).click();
   await expect(dialog).toBeHidden();
+});
+
+test("CART-01b P1 - adiciona produto ao carrinho pelo modal de detalhes", async ({
+  page,
+}) => {
+  await page.getByTestId("product-detail-3").click();
+  const dialog = page.getByRole("dialog", { name: "Glass Beaker 250ml" });
+  await dialog.getByRole("button", { name: "Add to bag" }).click();
+
+  await expect(dialog).toBeHidden();
+  await expect(page.getByTestId("cart-count")).toHaveText("1");
+  await page.getByTestId("open-cart-button").click();
+  await expect(page.getByTestId("cart-item-3")).toBeVisible();
+  await expect(page.getByTestId("cart-subtotal")).toContainText("18,50");
 });
 
 test("CAT-01b P1 - produto sem estoque não oferece ação de compra", async ({

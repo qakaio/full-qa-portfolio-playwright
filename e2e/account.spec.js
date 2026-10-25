@@ -19,6 +19,26 @@ test("ACC-05 P1 - campos obrigatórios impedem cadastro vazio", async ({
   await expect(page.getByRole("alert")).toHaveCount(0);
 });
 
+test("ACC-05b P1 - CPF inválido apresenta erro e não salva cadastro", async ({
+  page,
+}) => {
+  const email = "invalid-cpf@example.test";
+  await page.getByTestId("register-name-input").fill("QA Portfolio");
+  await page.getByTestId("register-email-input").fill(email);
+  await page.getByTestId("register-cpf-input").fill("123.456.789-00");
+  await page.getByTestId("register-phone-input").fill("11999990000");
+  await page.getByTestId("register-password-input").fill("ValidPass@123");
+  await page.getByTestId("register-confirm-password-input").fill("ValidPass@123");
+  await page.getByTestId("register-submit-button").click();
+
+  await expect(page.getByRole("alert")).toHaveText("Enter a valid CPF.");
+  const accountWasStored = await page.evaluate((candidateEmail) => {
+    const users = JSON.parse(localStorage.getItem("rampz-store-users") || "[]");
+    return users.some((user) => user.email === candidateEmail);
+  }, email);
+  expect(accountWasStored).toBe(false);
+});
+
 test("ACC-06 P1 - senhas diferentes não criam conta", async ({ page }) => {
   await page.getByTestId("register-name-input").fill("QA Suite");
   await page

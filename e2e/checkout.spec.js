@@ -17,7 +17,7 @@ test("CHK-01 P1 - checkout vazio não é iniciado", async ({ page }) => {
   await expect(page.getByTestId("checkout-button")).toBeDisabled();
 });
 
-test("CHK-02 P1 - endereço incompleto não avança no checkout", async ({
+test("CHK-02a P1 - endereço incompleto não avança no checkout", async ({
   page,
 }) => {
   await addProductToBag(page, 3);
@@ -44,7 +44,7 @@ test("CHK-02 P1 - endereço incompleto não avança no checkout", async ({
   ).toHaveCount(0);
 });
 
-test("CHK-02 P1 - e-mail e CEP inválidos não avançam do endereço", async ({
+test("CHK-02b P1 - e-mail e CEP inválidos não avançam do endereço", async ({
   page,
 }) => {
   await addProductToBag(page, 3);

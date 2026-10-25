@@ -87,7 +87,10 @@ Organize a suíte por nível, evitando tentar provar tudo pelo navegador:
 3. **Testes E2E**: jornadas de ponta a ponta e resultados visíveis pelo usuário,
    executados contra a URL publicada. Os specs estão separados por catálogo,
    carrinho, checkout, contato e verificações de interface em `e2e/`.
-4. **Testes não funcionais leves**: responsividade, teclado e ausência de
+4. **Smoke checks HTTP de deployment**: status e content-type do HTML, CSS e
+   JavaScript publicados. Esses GETs verificam a hospedagem estática, não o
+   contrato da API de negócio.
+5. **Testes não funcionais leves**: responsividade, teclado e ausência de
    overflow. São smoke checks Chromium; não substituem auditoria completa de
    acessibilidade, desempenho ou compatibilidade.
 
@@ -101,15 +104,18 @@ resultado ao usuário.
 Os casos abaixo estão automatizados nos arquivos `e2e/*.spec.js` e executam
 contra a versão publicada. O conjunto foi ampliado com cenários do backlog e
 inclui somente comportamentos verificáveis nessa aplicação publicada.
+Para IDs, prioridade, status e limitações por caso, consulte
+[`TEST-CASE-MATRIX.md`](./TEST-CASE-MATRIX.md).
 
 | Área | Casos existentes |
 |---|---|
 | Catálogo | Seed visual e paginação; busca sem diferenciar caixa; estado vazio e limpeza; combinação de categoria, faixa de preço, estoque e ordenação; filtro de preço exato; detalhes do produto fechados por Escape ou botão; produto indisponível. |
-| Carrinho | Adição repetida do mesmo produto; subtotal; alteração de quantidade; limites máximo e de estoque; remoção de um ou todos os itens; persistência após recarregar; recuperação de conteúdo corrompido no `localStorage`. |
+| Carrinho | Adição pelo diálogo de detalhes e adição repetida do mesmo produto; subtotal; alteração de quantidade; limites máximo e de estoque; remoção de um ou todos os itens; persistência após recarregar; recuperação de conteúdo corrompido no `localStorage`. |
 | Checkout | Abertura com item; validação de endereço obrigatório, e-mail e CEP; estado quando a API pública de frete falha, sem avanço ou confirmação falsa. |
-| Conta | Validação de campos obrigatórios e confirmação de senha diferente no cadastro local. Login, pedidos e administração não foram automatizados porque a autenticação publicada não está acessível sem a API. |
+| Conta | Validação de campos obrigatórios, CPF inválido sem persistir conta e confirmação de senha diferente no cadastro local. Login, pedidos e administração não foram automatizados porque a autenticação publicada não está acessível sem a API. |
 | Contato | Campos obrigatórios; formato de e-mail; tamanho mínimo da mensagem; confirmação local sem requisição de envio. |
 | Layout, teclado e acessibilidade | Viewports de 320, 390, 768, 1280 e 1440 px; atalho `/`; navegação por âncoras; nomes acessíveis nos controles principais e hierarquia básica de headings; exceções JavaScript no carregamento. |
+| Deployment | Resposta HTTP 200 e tipo de conteúdo do documento principal, do CSS e do JavaScript publicados. Não valida endpoints da API de negócio. |
 
 Os testes `CHK-01` e `CART-04` verificam e documentam o estado do checkout
 vazio. `CHK-01` está marcado como falha esperada: a versão publicada deixa o
@@ -129,7 +135,7 @@ um caso como automatizado sem teste e execução comprovável.
 | ID | Prioridade | Cenário | Resultado esperado |
 |---|---|---|---|
 | CAT-01 | P1 | Validar resposta da API de categorias e produtos | Contrato HTTP/JSON validado contra um ambiente que exponha a API. |
-| CAT-05 | P2 | Preço mínimo maior que máximo ou preço negativo | Registrar a regra de negócio esperada e validar os limites restantes. |
+| CAT-05b | P2 | Preço mínimo maior que máximo ou preço negativo | Registrar a regra de negócio esperada antes de automatizar. |
 | CAT-07 | P1 | API de categorias ou produtos indisponível/inválida | Mensagem de erro explícita; não mostrar sucesso com dados stale. |
 | CAT-09 | P2 | Validar link da marca e links/âncoras ainda não cobertos | Navegação/scroll chega à seção correta. |
 
@@ -137,14 +143,13 @@ um caso como automatizado sem teste e execução comprovável.
 
 | ID | Prioridade | Cenário | Resultado esperado |
 |---|---|---|---|
-| CART-06 | P2 | Estoque muda entre catálogo e checkout | Usuário recebe erro claro e não consegue confirmar quantidade que deixou de estar disponível. |
+| CART-06b | P2 | Estoque muda entre catálogo e checkout | Usuário recebe erro claro e não consegue confirmar quantidade que deixou de estar disponível. |
 | CART-07 | P2 | Fazer login/logout com carrinho já preenchido | Confirmar o comportamento intencional de merge/troca entre carrinho anônimo e carrinho da conta. |
 
 ### 5.3 Checkout, frete e cupons
 
 | ID | Prioridade | Cenário | Resultado esperado |
 |---|---|---|---|
-| CHK-02 | P1 | Enviar endereço incompleto/CEP inválido | Mantém etapa atual e destaca validação sem avançar. |
 | CHK-03 | P1 | Calcular frete para CEP de regiões diferentes | Região, prazo e preço correspondem às regras simuladas. |
 | CHK-04 | P1 | Frete grátis no limite exato e acima do limite | Confirmar o comportamento de fronteira (R$ 500 e R$ 500,01). |
 | CHK-05 | P1 | Aplicar `LAB20` abaixo e acima do mínimo | Abaixo do limite rejeita; acima aplica desconto elegível. |

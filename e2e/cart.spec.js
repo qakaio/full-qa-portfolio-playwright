@@ -50,7 +50,7 @@ test("CART-03 P1 - mantém itens e quantidades após recarregar", async ({
   await expect(page.getByTestId("cart-subtotal")).toContainText("37,00");
 });
 
-test("CART-04 P1 - remove o último item e exibe o carrinho vazio", async ({
+test("CART-04a P1 - remove o último item e exibe o carrinho vazio", async ({
   page,
 }) => {
   await addProductToBag(page, 3);
@@ -61,7 +61,7 @@ test("CART-04 P1 - remove o último item e exibe o carrinho vazio", async ({
   await expect(page.getByText("Your bag is taking a break.")).toBeVisible();
 });
 
-test("CART-04 P1 - remover um item atualiza o total e permite remover o restante", async ({
+test("CART-04b P1 - remover um item atualiza o total e permite remover o restante", async ({
   page,
 }) => {
   await addProductToBag(page, 3);

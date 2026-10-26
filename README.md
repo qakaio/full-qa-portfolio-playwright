@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 # Rampz Store — QA Automation Portfolio
 
 Suíte de automação E2E em Playwright para a loja demo Rampz Store. O projeto
@@ -138,4 +137,3 @@ npx playwright test
 **Kaio Garcia** | QA Engineer
 
 [GitHub](https://github.com/qakaio) · [LinkedIn](https://www.linkedin.com/in/kaioqa/)
->>>>>>> c4d3f38720a440ffd33c855fe16252db27728bb4

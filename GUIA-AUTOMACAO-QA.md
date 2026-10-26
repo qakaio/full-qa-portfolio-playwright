@@ -93,7 +93,9 @@ Organize a suíte por nível, evitando tentar provar tudo pelo navegador:
 4. **Smoke checks HTTP de deployment**: status e content-type do HTML, CSS e
    JavaScript publicados. Esses GETs verificam a hospedagem estática, não o
    contrato da API de negócio.
-5. **Testes não funcionais leves**: responsividade, teclado, ausência de
+5. **Testes do tooling de CI**: testes unitários do agregador de resultados,
+   classificando corretamente aprovações, falhas esperadas/inesperadas e retries.
+6. **Testes não funcionais leves**: responsividade, teclado, ausência de
    overflow e auditoria automatizada axe-core para WCAG 2.1 A/AA. São
    verificações cross-browser; não substituem avaliação manual, leitor de tela
    ou testes de desempenho.
@@ -118,7 +120,7 @@ Para IDs, prioridade, status e limitações por caso, consulte
 | Checkout | Abertura com item; validação de endereço obrigatório, e-mail e CEP; estado quando a API pública de frete falha, sem avanço ou confirmação falsa. |
 | Conta | Validação de campos obrigatórios, CPF inválido sem persistir conta e confirmação de senha diferente no cadastro local. Login, pedidos e administração não foram automatizados porque a autenticação publicada não está acessível sem a API. |
 | Contato | Campos obrigatórios; formato de e-mail; tamanho mínimo da mensagem; confirmação local sem requisição de envio. |
-| Layout, teclado e acessibilidade | Viewports de 320, 390, 768, 1280 e 1440 px; atalho `/`; navegação por âncoras; nomes acessíveis nos controles principais e hierarquia básica de headings; exceções JavaScript; auditoria axe-core WCAG 2.1 A/AA (UI-05, baseline conhecido). |
+| Layout, teclado e acessibilidade | Viewports de 320, 390, 768, 1280 e 1440 px; atalho `/`; navegação por âncoras; nomes acessíveis nos controles principais e hierarquia básica de headings; exceções JavaScript; auditoria axe-core WCAG 2.1 A/AA na página inicial (UI-05, baseline conhecido), diálogo de produto (UI-06) e cadastro (UI-07). |
 | Deployment | Resposta HTTP 200 e tipo de conteúdo do documento principal, do CSS e do JavaScript publicados. Não valida endpoints da API de negócio. |
 
 Os testes `CHK-01` e `CART-04` verificam e documentam o estado do checkout

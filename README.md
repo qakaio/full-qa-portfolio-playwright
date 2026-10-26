@@ -20,7 +20,7 @@ validação de formulários, responsividade e evidências de execução.
 ```powershell
 npm ci
 npx playwright install chromium firefox webkit
-npm run test:e2e
+npm run test:all
 ```
 
 O Playwright HTML report abre com `npm run test:e2e:report`. Os resultados
@@ -45,6 +45,8 @@ npx playwright test --grep "CART"
 `npm run test:summary` resume o último relatório JSON do Playwright por
 navegador. Execute-o após a suíte; no GitHub Actions, o mesmo resumo aparece
 automaticamente na página da execução.
+`npm run test:all` executa primeiro os testes unitários do gerador de resumo e
+depois a suíte E2E nos três navegadores.
 
 ## Cobertura atual
 
@@ -55,11 +57,11 @@ automaticamente na página da execução.
 | Checkout | Campos obrigatórios, e-mail e CEP inválidos, erro de frete sem confirmação indevida e comportamento do checkout vazio. |
 | Conta | Obrigatórios do cadastro, rejeição de CPF inválido sem persistir conta e confirmação de senha diferente. |
 | Contato | Campos obrigatórios, formato de e-mail, tamanho mínimo e confirmação local sem chamada de envio. |
-| Interface | Viewports de 320–1440 px, navegação por teclado, nomes acessíveis, âncoras, exceções JavaScript e auditoria axe-core WCAG 2.1 A/AA. |
+| Interface | Viewports de 320–1440 px, navegação por teclado, nomes acessíveis, âncoras, exceções JavaScript e auditoria axe-core WCAG 2.1 A/AA na página, diálogo de produto e cadastro. |
 | Deployment | Status HTTP e tipo de conteúdo da página publicada, CSS e JavaScript. Esses checks não substituem testes da API de negócio. |
 
-**Execução de referência:** 35 cenários Playwright em Chromium, Firefox e
-WebKit (105 execuções na matriz); `npm ci` e
+**Execução de referência:** 37 cenários Playwright em Chromium, Firefox e
+WebKit (111 execuções na matriz); `npm ci` e
 `npm run test:e2e` validados localmente. O caso CHK-01 é uma falha esperada
 intencional: o site público deixa o botão de checkout habilitado com o
 carrinho vazio. UI-05 também registra como falha esperada o baseline de

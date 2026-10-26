@@ -95,3 +95,47 @@ test("UI-05 P1 - página inicial não apresenta violações WCAG A/AA", async ({
 
   expect(violations, JSON.stringify(violations, null, 2)).toEqual([]);
 });
+
+test("UI-06 P1 - diálogo de produto atende WCAG 2.1 A/AA", async ({
+  page,
+}) => {
+  await page.getByTestId("product-detail-3").click();
+  const dialog = page.getByRole("dialog", { name: "Glass Beaker 250ml" });
+  await expect(dialog).toBeVisible();
+
+  const accessibilityScan = await new AxeBuilder({ page })
+    .include('[role="dialog"]')
+    .withTags(["wcag2a", "wcag2aa", "wcag21a", "wcag21aa"])
+    .analyze();
+
+  const violations = accessibilityScan.violations.map((violation) => ({
+    id: violation.id,
+    impact: violation.impact,
+    affectedNodes: violation.nodes.length,
+    sampleTargets: violation.nodes.slice(0, 3).map((node) => node.target),
+  }));
+
+  expect(violations, JSON.stringify(violations, null, 2)).toEqual([]);
+});
+
+test("UI-07 P1 - formulário de cadastro atende WCAG 2.1 A/AA", async ({
+  page,
+}) => {
+  await page.getByTestId("open-account-button").click();
+  await page.getByRole("button", { name: "Create account", exact: true }).click();
+  await expect(page.getByTestId("register-submit-button")).toBeVisible();
+
+  const accessibilityScan = await new AxeBuilder({ page })
+    .include('[role="dialog"]')
+    .withTags(["wcag2a", "wcag2aa", "wcag21a", "wcag21aa"])
+    .analyze();
+
+  const violations = accessibilityScan.violations.map((violation) => ({
+    id: violation.id,
+    impact: violation.impact,
+    affectedNodes: violation.nodes.length,
+    sampleTargets: violation.nodes.slice(0, 3).map((node) => node.target),
+  }));
+
+  expect(violations, JSON.stringify(violations, null, 2)).toEqual([]);
+});

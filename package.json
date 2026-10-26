@@ -7,6 +7,8 @@
   },
   "scripts": {
     "test:e2e": "playwright test",
+    "test:unit": "node --test scripts/write-test-summary.test.js",
+    "test:all": "npm run test:unit && npm run test:e2e",
     "test:e2e:ui": "playwright test --ui",
     "test:e2e:headed": "playwright test --headed",
     "test:e2e:report": "playwright show-report",

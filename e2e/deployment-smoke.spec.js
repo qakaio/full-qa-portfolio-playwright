@@ -1,6 +1,6 @@
 import { expect, test } from "@playwright/test";
 
-test("DEP-01 P1 - página publicada responde como HTML da Rampz Store", async ({
+test("DEP-01 P1 - published page responds with Rampz Store HTML", async ({
   request,
 }) => {
   const response = await request.get("./");
@@ -14,7 +14,7 @@ test("DEP-01 P1 - página publicada responde como HTML da Rampz Store", async ({
   );
 });
 
-test("DEP-02 P1 - recursos CSS e JavaScript publicados respondem com MIME correto", async ({
+test("DEP-02 P1 - published CSS and JavaScript return the expected MIME types", async ({
   request,
 }) => {
   const assets = [

@@ -40,7 +40,10 @@ function summarizeReport(report) {
         (result) => result.status === "failed" || result.status === "timedOut",
       );
 
-    if (test.expectedStatus === "failed" && finalResult?.status === "failed") {
+    if (
+      test.expectedStatus === "failed" &&
+      ["failed", "timedOut"].includes(finalResult?.status)
+    ) {
       project.expectedFailures += 1;
     } else if (
       test.expectedStatus === "failed" &&

@@ -22,6 +22,7 @@ test("summarizes browser results and classifies expected, flaky, and skipped cas
         specs: [
           spec("pass", "chromium", "passed", ["passed"]),
           spec("expected failure", "chromium", "failed", ["failed"]),
+          spec("expected timeout", "chromium", "failed", ["timedOut"]),
           spec("unexpected pass", "chromium", "failed", ["passed"]),
           spec("flaky retry", "firefox", "passed", ["failed", "passed"]),
           spec("failed", "firefox", "passed", ["timedOut"]),
@@ -41,7 +42,7 @@ test("summarizes browser results and classifies expected, flaky, and skipped cas
 
   assert.deepEqual(summary.get("chromium"), {
     passed: 1,
-    expectedFailures: 1,
+    expectedFailures: 2,
     unexpectedPasses: 1,
     flaky: 0,
     skipped: 0,

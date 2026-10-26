@@ -5,10 +5,10 @@ test.beforeEach(async ({ page }) => {
   await openCleanStore(page);
 });
 
-test("CHK-01 P1 - checkout vazio não é iniciado", async ({ page }) => {
+test("CHK-01 P1 - checkout cannot start with an empty cart", async ({ page }) => {
   test.fail(
     true,
-    "A versão publicada deixa o botão de checkout habilitado com o carrinho vazio.",
+    "The published site leaves the checkout button enabled when the cart is empty.",
   );
 
   await page.getByTestId("open-cart-button").click();
@@ -17,7 +17,7 @@ test("CHK-01 P1 - checkout vazio não é iniciado", async ({ page }) => {
   await expect(page.getByTestId("checkout-button")).toBeDisabled();
 });
 
-test("CHK-02a P1 - endereço incompleto não avança no checkout", async ({
+test("CHK-02a P1 - incomplete address does not advance checkout", async ({
   page,
 }) => {
   await addProductToBag(page, 3);
@@ -44,7 +44,7 @@ test("CHK-02a P1 - endereço incompleto não avança no checkout", async ({
   ).toHaveCount(0);
 });
 
-test("CHK-02b P1 - e-mail e CEP inválidos não avançam do endereço", async ({
+test("CHK-02b P1 - invalid email and ZIP do not advance past the address step", async ({
   page,
 }) => {
   await addProductToBag(page, 3);
@@ -85,7 +85,7 @@ test("CHK-02b P1 - e-mail e CEP inválidos não avançam do endereço", async ({
   ).toHaveCount(0);
 });
 
-test("CHK-10 P1 - falha da API de frete mostra erro sem confirmar avanço", async ({
+test("CHK-10 P1 - shipping API failure shows an error and does not advance checkout", async ({
   page,
 }) => {
   await addProductToBag(page, 3);

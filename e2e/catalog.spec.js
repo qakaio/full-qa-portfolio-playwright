@@ -5,7 +5,7 @@ test.beforeEach(async ({ page }) => {
   await openCleanStore(page);
 });
 
-test("CAT-01 P1 - exibe produtos, categorias e paginação do catálogo", async ({
+test("CAT-01 P1 - displays catalog products, categories, and pagination", async ({
   page,
 }) => {
   await expect(page.getByTestId("product-card-1")).toBeVisible();
@@ -17,7 +17,7 @@ test("CAT-01 P1 - exibe produtos, categorias e paginação do catálogo", async 
   await expect(page.getByText(/Showing.*1–12.*20 products/)).toBeVisible();
 });
 
-test("CAT-02 P1 - busca sem diferenciar caixa e limpa estado vazio", async ({
+test("CAT-02 P1 - search ignores case and clears the empty state", async ({
   page,
 }) => {
   const grid = page.getByTestId("product-grid");
@@ -35,7 +35,7 @@ test("CAT-02 P1 - busca sem diferenciar caixa e limpa estado vazio", async ({
   await expect(search).toHaveValue("");
 });
 
-test("CAT-03 P1 - combina categoria, preço, estoque e ordenação", async ({
+test("CAT-03 P1 - combines category, price, stock, and sorting filters", async ({
   page,
 }) => {
   await page.getByTestId("category-filter-equipment").click();
@@ -54,7 +54,7 @@ test("CAT-03 P1 - combina categoria, preço, estoque e ordenação", async ({
   await expect(cards.nth(2)).toContainText("Precision Scale 0.01g");
 });
 
-test("CAT-04 P1 - limpar filtros restaura o catálogo após filtrar", async ({
+test("CAT-04 P1 - clearing filters restores the default catalog", async ({
   page,
 }) => {
   await page.getByTestId("category-filter-equipment").click();
@@ -72,7 +72,7 @@ test("CAT-04 P1 - limpar filtros restaura o catálogo após filtrar", async ({
   await expect(page.getByTestId("min-price-filter")).toHaveValue("");
 });
 
-test("CAT-05 P2 - limite de preço idêntico retorna apenas o preço correspondente", async ({
+test("CAT-05 P2 - equal price boundaries return the matching product", async ({
   page,
 }) => {
   await page.getByTestId("min-price-filter").fill("18.5");
@@ -83,7 +83,7 @@ test("CAT-05 P2 - limite de preço idêntico retorna apenas o preço corresponde
   await expect(cards.first()).toContainText("Glass Beaker 250ml");
 });
 
-test("CAT-06 P2 - navega para a próxima página e retorna", async ({ page }) => {
+test("CAT-06 P2 - navigates to the next page and back", async ({ page }) => {
   const grid = page.getByTestId("product-grid");
 
   await page.getByTestId("pagination-next").click();
@@ -95,7 +95,7 @@ test("CAT-06 P2 - navega para a próxima página e retorna", async ({ page }) =>
   await expect(grid.locator("article")).toHaveCount(12);
 });
 
-test("CAT-08a P2 - fecha detalhes do produto com Escape e devolve o foco", async ({
+test("CAT-08a P2 - Escape closes product details and restores focus", async ({
   page,
 }) => {
   const detailButton = page.getByRole("button", {
@@ -116,7 +116,7 @@ test("CAT-08a P2 - fecha detalhes do produto com Escape e devolve o foco", async
   await expect(detailButton).toBeFocused();
 });
 
-test("CAT-08b P2 - fecha detalhes pelo botão de fechar", async ({ page }) => {
+test("CAT-08b P2 - close button dismisses product details", async ({ page }) => {
   await page.getByTestId("product-detail-3").click();
   const dialog = page.getByRole("dialog", { name: "Glass Beaker 250ml" });
   await expect(dialog).toBeVisible();
@@ -125,7 +125,7 @@ test("CAT-08b P2 - fecha detalhes pelo botão de fechar", async ({ page }) => {
   await expect(dialog).toBeHidden();
 });
 
-test("CART-01b P1 - adiciona produto ao carrinho pelo modal de detalhes", async ({
+test("CART-01b P1 - adds a product to the cart from the details dialog", async ({
   page,
 }) => {
   await page.getByTestId("product-detail-3").click();
@@ -139,7 +139,7 @@ test("CART-01b P1 - adiciona produto ao carrinho pelo modal de detalhes", async 
   await expect(page.getByTestId("cart-subtotal")).toContainText("18,50");
 });
 
-test("CAT-01b P1 - produto sem estoque não oferece ação de compra", async ({
+test("CAT-01b P1 - out-of-stock product has no purchase action", async ({
   page,
 }) => {
   const unavailableProduct = page.getByTestId("product-card-12");

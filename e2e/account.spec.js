@@ -7,7 +7,7 @@ test.beforeEach(async ({ page }) => {
   await page.getByRole("button", { name: "Create account", exact: true }).click();
 });
 
-test("ACC-05 P1 - campos obrigatórios impedem cadastro vazio", async ({
+test("ACC-05 P1 - required fields prevent empty account registration", async ({
   page,
 }) => {
   await page.getByTestId("register-submit-button").click();
@@ -19,7 +19,7 @@ test("ACC-05 P1 - campos obrigatórios impedem cadastro vazio", async ({
   await expect(page.getByRole("alert")).toHaveCount(0);
 });
 
-test("ACC-05b P1 - CPF inválido apresenta erro e não salva cadastro", async ({
+test("ACC-05b P1 - invalid CPF shows an error and does not save registration", async ({
   page,
 }) => {
   const email = "invalid-cpf@example.test";
@@ -39,7 +39,7 @@ test("ACC-05b P1 - CPF inválido apresenta erro e não salva cadastro", async ({
   expect(accountWasStored).toBe(false);
 });
 
-test("ACC-06 P1 - senhas diferentes não criam conta", async ({ page }) => {
+test("ACC-06 P1 - mismatched passwords do not create an account", async ({ page }) => {
   await page.getByTestId("register-name-input").fill("QA Suite");
   await page
     .getByTestId("register-email-input")

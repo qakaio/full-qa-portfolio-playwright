@@ -1,42 +1,49 @@
-# Full QA Portfolio with Playwright
+# QA Automation Portfolio — Rampz Store
 
 ![Playwright CI](https://github.com/qakaio/full-qa-portfolio-playwright/actions/workflows/e2e.yml/badge.svg)
 
-An all-in-one QA project demonstrating multiple testing approaches, automation technologies, and quality engineering practices in a single repository.
+Playwright E2E portfolio project for a demo storefront.
 
-**Live Demo:** https://qakaio.github.io/rampz-store
+**Live demo:** https://qakaio.github.io/rampz-store/
 
-**Allure Report:** https://qakaio.github.io/full-qa-portfolio-playwright/
+**Allure report:** https://qakaio.github.io/full-qa-portfolio-playwright/
 
-## What This Project Covers
+## Coverage
 
-- **E2E Testing:** UI automation, user flows, assertions, and regression testing.
-- **API Testing:** Endpoint validation, response assertions, and error handling.
-- **Cross-Browser Testing:** Chromium, Firefox, and WebKit.
-- **CI/CD:** Automated test execution with GitHub Actions.
-- **AI-Assisted QA:** Exploring AI applications in test design and automation.
-- **Quality Engineering:** Test strategy, maintainability, reporting, and defect prevention.
+- 37 scenarios across Chromium, Firefox, and WebKit (111 browser runs)
+- Catalog, cart, checkout validation, account, and contact flows
+- Responsive layout, keyboard navigation, and axe-core accessibility checks
+- Static deployment smoke checks and GitHub Actions CI
 
-## Tech Stack
+Known expected failures are documented in the [test case matrix](./TEST-CASE-MATRIX.md).
 
-- Playwright
-- JavaScript
-- API and UI automation
-- GitHub Actions
-- HTML test reports
-- AI-assisted testing
+## Quality approach
 
-## Run Locally
+- Reset browser storage before each scenario to reduce cross-test state leakage
+- Use user-facing roles/labels and stable test IDs for clear, maintainable selectors
+- Cover negative paths and boundaries, including empty states, stock limits, and exact price ranges
+- Track known product defects as expected failures instead of masking them
+
+## Run locally
 
 ```bash
-git clone https://github.com/qakaio/full-qa-portfolio-playwright.git
-cd full-qa-portfolio-playwright
-npm install
-npx playwright install
-npx playwright test
+npm ci
+npx playwright install chromium firefox webkit
+npm run test:all
 ```
 
-## Docs
+To generate the Allure report locally, install Java 17+ and run:
+
+```bash
+npm run allure:generate
+npm run allure:open
+```
+
+## Scope and limitations
+
+The tests target the public static site. API contracts and positive flows for authentication, payments, orders, and administration require a backend environment and are not currently covered.
+
+## Documentation
 
 - [QA Automation Guide](./QA-AUTOMATION-GUIDE.md)
 - [Test Case Matrix](./TEST-CASE-MATRIX.md)

@@ -5,7 +5,7 @@ test.beforeEach(async ({ page }) => {
   await openCleanStore(page);
 });
 
-test("CART-01 P1 - adiciona e atualiza quantidade e subtotal", async ({
+test("CART-01 P1 - adding products updates quantity and subtotal", async ({
   page,
 }) => {
   await addProductToBag(page, 3);
@@ -23,7 +23,7 @@ test("CART-01 P1 - adiciona e atualiza quantidade e subtotal", async ({
   await expect(page.getByTestId("cart-subtotal")).toContainText("55,50");
 });
 
-test("CART-02 P1 - limita a quantidade a dez unidades", async ({ page }) => {
+test("CART-02 P1 - limits quantity to ten units", async ({ page }) => {
   await addProductToBag(page, 3);
   await page.getByTestId("open-cart-button").click();
 
@@ -36,7 +36,7 @@ test("CART-02 P1 - limita a quantidade a dez unidades", async ({ page }) => {
   await expect(increase).toBeDisabled();
 });
 
-test("CART-03 P1 - mantém itens e quantidades após recarregar", async ({
+test("CART-03 P1 - preserves cart items and quantities after reload", async ({
   page,
 }) => {
   await addProductToBag(page, 3);
@@ -50,7 +50,7 @@ test("CART-03 P1 - mantém itens e quantidades após recarregar", async ({
   await expect(page.getByTestId("cart-subtotal")).toContainText("37,00");
 });
 
-test("CART-04a P1 - remove o último item e exibe o carrinho vazio", async ({
+test("CART-04a P1 - removing the last item shows the empty cart state", async ({
   page,
 }) => {
   await addProductToBag(page, 3);
@@ -61,7 +61,7 @@ test("CART-04a P1 - remove o último item e exibe o carrinho vazio", async ({
   await expect(page.getByText("Your bag is taking a break.")).toBeVisible();
 });
 
-test("CART-04b P1 - remover um item atualiza o total e permite remover o restante", async ({
+test("CART-04b P1 - removing an item updates the subtotal and supports clearing the cart", async ({
   page,
 }) => {
   await addProductToBag(page, 3);
@@ -76,7 +76,7 @@ test("CART-04b P1 - remover um item atualiza o total e permite remover o restant
   await expect(page.getByText("Your bag is taking a break.")).toBeVisible();
 });
 
-test("CART-06 P2 - limite de quantidade respeita o estoque disponível", async ({
+test("CART-06 P2 - quantity limit respects available stock", async ({
   page,
 }) => {
   await page.getByTestId("pagination-next").click();
@@ -91,7 +91,7 @@ test("CART-06 P2 - limite de quantidade respeita o estoque disponível", async (
   await expect(page.getByTestId("cart-item-increase-13")).toBeDisabled();
 });
 
-test("CART-05 P2 - recupera de dados de carrinho inválidos no storage", async ({
+test("CART-05 P2 - recovers from invalid cart data in storage", async ({
   page,
 }) => {
   await addProductToBag(page, 3);

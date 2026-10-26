@@ -5,7 +5,7 @@ test.beforeEach(async ({ page }) => {
   await openCleanStore(page);
 });
 
-test("CON-01a P1 - impede envio de contato com campos obrigatórios vazios", async ({
+test("CON-01a P1 - required contact fields prevent empty submission", async ({
   page,
 }) => {
   await page.getByTestId("contact-submit-button").click();
@@ -21,7 +21,7 @@ test("CON-01a P1 - impede envio de contato com campos obrigatórios vazios", asy
   ).toHaveCount(0);
 });
 
-test("CON-01b P1 - valida formato de e-mail e tamanho mínimo da mensagem", async ({
+test("CON-01b P1 - validates email format and minimum message length", async ({
   page,
 }) => {
   await page.getByTestId("contact-name-input").fill("QA Tester");
@@ -40,7 +40,7 @@ test("CON-01b P1 - valida formato de e-mail e tamanho mínimo da mensagem", asyn
   expect(messageIsInvalid).toBe(true);
 });
 
-test("CON-02 P1 - valida mensagem local sem enviar requisição", async ({
+test("CON-02 P1 - valid contact message shows local confirmation without a request", async ({
   page,
 }) => {
   const nonGetRequests = [];

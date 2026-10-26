@@ -6,7 +6,7 @@ test.beforeEach(async ({ page }) => {
   await openCleanStore(page);
 });
 
-test("UI-01 P1 - não apresenta overflow horizontal nos viewports alvo", async ({
+test("UI-01 P1 - no horizontal overflow at target viewport sizes", async ({
   page,
 }) => {
   for (const width of [320, 390, 768, 1280, 1440]) {
@@ -23,14 +23,14 @@ test("UI-01 P1 - não apresenta overflow horizontal nos viewports alvo", async (
   }
 });
 
-test("UI-02 P1 - atalho de teclado foca a busca", async ({ page }) => {
+test("UI-02 P1 - keyboard shortcut focuses product search", async ({ page }) => {
   const search = page.getByRole("searchbox", { name: /Search products/ });
 
   await page.keyboard.press("/");
   await expect(search).toBeFocused();
 });
 
-test("UI-03 P2 - controles principais têm nomes acessíveis", async ({
+test("UI-03 P2 - primary controls have accessible names", async ({
   page,
 }) => {
   await expect(
@@ -49,7 +49,7 @@ test("UI-03 P2 - controles principais têm nomes acessíveis", async ({
   await expect(page.getByRole("heading", { level: 1 })).toHaveCount(1);
 });
 
-test("NAV-01 P2 - links da navegação levam às seções correspondentes", async ({
+test("NAV-01 P2 - navigation links reach their matching sections", async ({
   page,
 }) => {
   await page.getByTestId("nav-categories").click();
@@ -62,7 +62,7 @@ test("NAV-01 P2 - links da navegação levam às seções correspondentes", asyn
   await expect(page).toHaveURL(/#contact$/);
 });
 
-test("UI-04 P2 - página inicial não lança exceções JavaScript", async ({
+test("UI-04 P2 - home page does not throw JavaScript exceptions", async ({
   page,
 }) => {
   const pageErrors = [];
@@ -74,12 +74,12 @@ test("UI-04 P2 - página inicial não lança exceções JavaScript", async ({
   expect(pageErrors).toEqual([]);
 });
 
-test("UI-05 P1 - página inicial não apresenta violações WCAG A/AA", async ({
+test("UI-05 P1 - home page has no WCAG A/AA violations", async ({
   page,
 }) => {
   test.fail(
     true,
-    "Baseline público registra violações conhecidas; remover após correção no site.",
+    "The public baseline has known violations; remove this annotation after the site is fixed.",
   );
 
   const accessibilityScan = await new AxeBuilder({ page })
@@ -96,7 +96,7 @@ test("UI-05 P1 - página inicial não apresenta violações WCAG A/AA", async ({
   expect(violations, JSON.stringify(violations, null, 2)).toEqual([]);
 });
 
-test("UI-06 P1 - diálogo de produto atende WCAG 2.1 A/AA", async ({
+test("UI-06 P1 - product dialog meets WCAG 2.1 A/AA", async ({
   page,
 }) => {
   await page.getByTestId("product-detail-3").click();
@@ -118,7 +118,7 @@ test("UI-06 P1 - diálogo de produto atende WCAG 2.1 A/AA", async ({
   expect(violations, JSON.stringify(violations, null, 2)).toEqual([]);
 });
 
-test("UI-07 P1 - formulário de cadastro atende WCAG 2.1 A/AA", async ({
+test("UI-07 P1 - registration form meets WCAG 2.1 A/AA", async ({
   page,
 }) => {
   await page.getByTestId("open-account-button").click();

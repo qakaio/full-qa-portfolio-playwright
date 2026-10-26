@@ -36,6 +36,11 @@ npx playwright install
 npx playwright test
 ```
 
+## Docs
+
+- [QA Automation Guide](./QA-AUTOMATION-GUIDE.md)
+- [Test Case Matrix](./TEST-CASE-MATRIX.md)
+
 ## Author
 
 **Kaio Garcia** | QA Engineer

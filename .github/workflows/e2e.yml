@@ -79,7 +79,7 @@ jobs:
           path: allure-report
 
   pages:
-    if: github.event_name != 'pull_request' && github.ref == 'refs/heads/main'
+    if: always() && github.event_name != 'pull_request' && github.ref == 'refs/heads/main'
     needs: e2e
     runs-on: ubuntu-latest
     environment:

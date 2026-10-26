@@ -26,6 +26,14 @@ jobs:
       - name: Check out repository
         uses: actions/checkout@v4
 
+      - name: Restore Allure history
+        uses: actions/cache/restore@v4
+        with:
+          path: allure-history
+          key: allure-history-${{ github.ref_name }}-${{ github.run_id }}
+          restore-keys: |
+            allure-history-${{ github.ref_name }}-
+
       - name: Set up Node.js
         uses: actions/setup-node@v4
         with:
@@ -55,9 +63,42 @@ jobs:
         if: always() && steps.playwright.outcome != 'skipped'
         run: npm run test:summary
 
+      - name: Add previous history and execution metadata
+        if: always()
+        env:
+          TARGET_URL: ${{ vars.PLAYWRIGHT_BASE_URL || 'https://qakaio.github.io/rampz-store/' }}
+        run: |
+          mkdir -p allure-results
+          if [ -d allure-history ]; then
+            mkdir -p allure-results/history
+            cp -R allure-history/. allure-results/history/
+          fi
+          {
+            echo "CI=GitHub Actions"
+            echo "Repository=${GITHUB_REPOSITORY}"
+            echo "Branch=${GITHUB_REF_NAME}"
+            echo "Commit=${GITHUB_SHA}"
+            echo "Run=${GITHUB_SERVER_URL}/${GITHUB_REPOSITORY}/actions/runs/${GITHUB_RUN_ID}"
+            echo "Target URL=${TARGET_URL}"
+          } > allure-results/environment.properties
+
       - name: Generate Allure HTML report
         if: always()
         run: npm run allure:generate
+
+      - name: Prepare Allure history cache
+        if: always() && hashFiles('allure-report/history/**') != ''
+        run: |
+          rm -rf allure-history
+          mkdir -p allure-history
+          cp -R allure-report/history/. allure-history/
+
+      - name: Save Allure history
+        if: always() && hashFiles('allure-history/**') != ''
+        uses: actions/cache/save@v4
+        with:
+          path: allure-history
+          key: allure-history-${{ github.ref_name }}-${{ github.run_id }}
 
       - name: Upload test reports and failure evidence
         if: always()
